@@ -60,6 +60,10 @@ export const registerUser = async (payload: RegisterInput, avatar?: string) => {
     },
   });
 
+  if (user.avatar) {
+    user.avatar = `${process.env.app_url}${user.avatar}`
+  }
+
   return {
     token: signToken(user),
     user: toSafeUser(user),
@@ -82,6 +86,10 @@ export const loginUser = async (payload: LoginInput) => {
   if (!passwordMatched) {
     throw new ApiError(401, "Invalid email or password");
   }
+  if (user.avatar) {
+    user.avatar = `${process.env.app_url}${user.avatar}`
+  }
+
 
   return {
     token: signToken(user),
@@ -99,6 +107,10 @@ export const getCurrentUser = async (userId: string) => {
   if (!user) {
     throw new ApiError(404, "User not found");
   }
+  if (user.avatar) {
+    user.avatar = `${process.env.app_url}${user.avatar}`
+  }
+
 
   return toSafeUser(user);
 };
